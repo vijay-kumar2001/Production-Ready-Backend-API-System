@@ -1,0 +1,31 @@
+# Node modules
+node_modules/
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Geo database (large file)
+src/geo/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Mongo local files (if any)
+data/
+
+# VS Code
+.vscode/
+
+# Postman local exports (optional if sensitive)
+# postman/*.json
+
+# Build (if any later)
+dist/

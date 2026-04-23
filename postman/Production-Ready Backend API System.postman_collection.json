@@ -1,0 +1,135 @@
+{
+  "info": {
+    "_postman_id": "277168b0-1225-4456-81e8-f4ac38bbb746",
+    "name": "Production-Ready Backend API System",
+    "description": "This collection provides a comprehensive overview of the Production-Ready Backend API System by covering its core authentication, authorization, profile, and administrative user management capabilities. It is designed to support functional validation of key user lifecycle flows, including registration, login, token refresh, logout, profile retrieval, and privileged admin operations.\n\nThe collection is structured to reflect both standard application behavior and security-focused validation. Alongside primary success-path requests, it includes negative and edge-case scenarios such as missing, invalid, tampered, or insufficiently privileged tokens. This helps ensure the API is not only operational, but also resilient in enforcing access control, session integrity, and error handling.\n\nOverall, this collection serves as a practical resource for validating backend readiness, testing protected routes, verifying role-based access behavior, and maintaining confidence in the reliability and security of the system’s user-facing and admin-facing endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "46270453"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Logout User",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users(Admin)",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Get User By ID",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Role",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Negative / Edge Case",
+      "item": [
+        {
+          "name": "Profile without token",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Profile with invalid token",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Profile with tampered token",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Admin route with normal user",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh with invalid token",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

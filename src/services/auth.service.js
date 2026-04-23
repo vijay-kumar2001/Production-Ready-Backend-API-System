@@ -1,0 +1,184 @@
+import { tracingChannel } from "diagnostics_channel";
+import { AppError } from "../utils/AppError.js";
+import { refreshTokenModel } from "../models/refreshToken.model.js";
+import { userModel } from "../models/users.model.js";
+import { comparePassword, hashPassword } from "../utils/bcrypt.utils.js";
+import {
+    generateAccessToken,
+    generateRefreshToken,
+    verifyRefreshToken
+} from "../utils/jwt.utils.js";
+import { sessionService } from "./session.service.js";
+
+
+export const AuthService = {
+    async register({ email, password }) {
+        const alreadyExists = await userModel.findByEmail(email);
+
+        if (alreadyExists) {
+            throw new AppError("User already exists", 409);
+        }
+
+        const hashedPassword = await hashPassword(password);
+
+        return userModel.create({
+            email,
+            password: hashedPassword,
+            role: "user"
+        });
+    },
+    async login({ email, password }, meta) {   // destructured email & pass only from req.body(passed by controller while calling) , meta is passed as obj(createed by controller so safe)
+        // checking if user exist
+        const user = await userModel.findByEmail(email); // dont forget to await db operations
+        if (!user) {
+            throw new AppError("User does not exist", 401);
+        }
+
+        // if user exist , check password
+        const isMatch = await comparePassword(password, user.password);
+        if (!isMatch) {
+            throw new AppError("Wrong password", 401);
+        }
+
+        // if password is also right then user can login so now create session for it
+        const session = await sessionService.createSession(user._id, meta); //passing user._id to create session bcuz session must belong to specific user and for that session meta data is also need(like for showing device,location ,etc. but meta is optional just for better info.)
+        // session obj(that is created and then stored in session collection) structure : 
+        //         {
+        //             sessionId: uuidv4(),
+        //             userId,
+        //             ...meta,
+        //             expiresAt: now + SESSION_EXPIRES_IN
+        //         }
+        // where meta is below thing
+        // meta = {
+        //          ip: clientIp || "unknown",
+        //          userAgent,
+        //          device: detectDevice(userAgent),
+        //          location: getLocationFromIp(clientIp)
+        //         }
+        // so ultimately it is 
+        //{
+        //     sessionId: uuidv4(),
+        //     userId,
+        //     ip: clientIp || "unknown",
+        //     userAgent,
+        //     device: detectDevice(userAgent),
+        //     location: getLocationFromIp(clientIp),
+        //     expiresAt: now + SESSION_EXPIRES_IN
+        // }
+
+        //now since session is created , now we need to create jwt tokens and for that we need those credentials of user which are absolutely unqiue to him and will help us later fetch his profile so we will use userId to fetch profile , sessionId to fetch session , role for access control and pass these as payload to create those tokens 
+        const payload = {
+            userId: user._id,
+            sessionId: session.sessionId,
+            role: user.role
+        }
+
+        const accessToken = generateAccessToken(payload);
+        const refreshToken = generateRefreshToken(payload);
+
+        // for refreshing access token we need to store refresh token (jwt checks if token is created by it using provided secret or not and is it not expired) , user might logged in from different devices so we need to bind refresh token with session using session id so that we can add extra layer of safety also like if refresh token is also stolen then for refresh still session id will be needed and if that session id also exists in session model then refresh token will be refreshed along with access token
+
+        await refreshTokenModel.create({
+            refreshToken,
+            sessionId: session.sessionId
+        });
+        // since this is service fucntion and will be handled by controller so we can return everything safely we calculated here 
+        return { user, accessToken, refreshToken };
+
+
+    },
+    async refresh(receivedRefreshToken) { // this is called by public route but actions are protected by refresh token so if refresh token does not exist error will be thrown(by m/w before controller that checks if refresh token exits and that should ideally exist after login and if faked then it will be handled in this service and thrown as error) , so ultimately user w/o refresh token cant do anything so it is safe , so this being public route does not means it is unsafe or any thing can be done by anyone 
+
+        // this implements refresh token rotation(stolen token become useless after 1 use) and sliding window of session(extends session)
+
+        // refresh token must be valid jwt(signed with our secret) , exist in db , match session , session must be valid so faking refresh token or random refresh is practically impossible to be successful in attack , so this is safe 
+
+        // it should not require access token as it should be called when access is expired using refresh and get new access and refresh tokens
+
+        async function invalidateRefreshToken() { // to reduce duplication
+            await refreshTokenModel.delete(receivedRefreshToken);
+        }
+        // so it should only use refreshToken validation and session Validation
+        const storedRefreshToken = await refreshTokenModel.find(receivedRefreshToken); //findOne will not be used here as that is mongoose function ie for model file , we will wrapper function over that 
+        if (!storedRefreshToken) {
+            throw new AppError("Invalid refresh token", 401);
+        } // if this passed then received refresh token do exist in db , now 
+        let decoded;
+
+        try {
+            decoded = verifyRefreshToken(receivedRefreshToken); // this might throw error (if not valid) thus kept inside try so that in case of error we can catch it and 1st delete this refresh token 
+        } catch (error) {
+            await invalidateRefreshToken(); // if validation fails then must due to being expired , tampered or invalid signature 
+            // we previously verified that it exists in db but now it fails validation so it exists but should not as refresh token might now be expired , tampered , secret is now changed , replay attack attempt . so delete it as it now not trustworthy.
+            // NOTE : existence is db should not be source of truth but jwt verification
+            throw new AppError("Refresh Token expired or invalid", 401);
+        }
+        // Rule:
+        // Use try-catch in service ONLY when:
+        // ✔ You want to transform error
+        // ✔ You want custom error
+        // ✔ You want fallback behavior
+        // ❌ Don’t use try-catch if:
+        // You just rethrow same error
+        if (storedRefreshToken.sessionId !== decoded.sessionId) { // checking session id to prevent attack where attacker might have swapped session id from other session , so if mismatch is allowed then it will result in security breach , so this prevent token swapping attack 
+            await invalidateRefreshToken(); // delete refresh token in any suspicious condition ie if it fails trust boundary checks
+            throw new AppError("Refresh token does not match session", 401);
+        }
+        // if sessionId also matches then check if session is valid or not 
+        // const session = await sessionService.validateSession(receivedRefreshToken.sessionId); this causes error as receivedRefreshToken is string so .sessionId will result in undefined then everything being right also will result in problem
+        const session = await sessionService.validateSession(decoded.sessionId); //  it returns session doc on success or null on failure
+
+        if (!session) {
+            await invalidateRefreshToken();
+            throw new AppError("Session Expired", 401);
+        }
+
+        // if received refresh token exists in db , it is verified to be signed by server using secret , its session id matches with session if of stored refresh token , session it claim to belong to exists then we now refresh access token , refresh token & extend session , and in case of any failure delete the refresh token from db as this ensures no risky or stale token remains
+
+        //token rotation should happen before extenting session (to prevent edge case where session is extended but deletion of refresh token fails then refresh token remains valid)
+        await refreshTokenModel.delete(receivedRefreshToken);//deleting received refresh token as it should now not be able to access protected routes , otherwise compromised refresh token will result in endless session;
+        await sessionService.extendSession(decoded.sessionId); //it only need id of session to extend lifetime of , as extendSession internally passes lifetime of session stored in env file
+
+        const payload = {
+            userId: decoded.userId,
+            sessionId: decoded.sessionId,
+            role: decoded.role
+        }
+
+        // creating new access and refresh token 
+        const newAccessToken = generateAccessToken(payload);
+        const newRefreshToken = generateRefreshToken(payload);
+
+        await refreshTokenModel.create({    // this stores refresh token with sessionId for which it is created
+            refreshToken: newRefreshToken,
+            sessionId: decoded.sessionId
+        }) // expects {refreshToken,sessionId}
+
+        return {
+            accessToken: newAccessToken,
+            refreshToken: newRefreshToken
+        }
+
+    },
+    async logout(refreshToken) { // for logout we need refreshToken and sessionId deletion, and as refreshToken payload contains 
+        // payload = {
+        //     userId: user._id,
+        //     sessionId: session.sessionId,
+        //     role: user.role
+        // } so taking refreshToken alone as arg is enough and we will retrieve session id from db using refreshToken  
+
+        const storedRefreshToken = await refreshTokenModel.find(refreshToken);
+        if (!storedRefreshToken) {
+            return null; //logout is made idempotent ie same request -> same result = no side effect , case 1 : user logs out , case 2 : if already logged out then null is return no error is thrown for missing token bcuz it is not critical validation operation , so if user clicks logout twice he should not see error
+        }
+        // if user exists then delete its refreshToken and session
+        await refreshTokenModel.deleteBySessionId(storedRefreshToken.sessionId);// use storedRefreshToken and not refreshToken as this is string so dot operation not allowed but prior one is obj where it is allowed
+        // refresh deletes only 1 rt so if there are many then others remains , so this ensure complete cleanup of session 
+        await sessionService.deleteSession(storedRefreshToken.sessionId); //dont forget await
+        return null;
+
+        // logout always returns null as this is action and not data retreival op. ,that is why service return value is irrelevant here 
+    },
+    
+};
