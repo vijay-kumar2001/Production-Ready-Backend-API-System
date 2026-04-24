@@ -33,8 +33,8 @@ Follow these steps to run the project locally.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/production-ready-backend-api.git
-cd production-ready-backend-api
+git clone https://github.com/vijay-kumar2001/production-ready-backend-api-system.git
+cd production-ready-backend-api-system
 ```
 
 ---
@@ -72,9 +72,7 @@ Due to its large size (~60MB), it is **not included in the repository**.
 
 #### 📥 Download
 
-Download the Geo database from:
-
-👉 *(Add your link here — Google Drive / direct link)*
+Download the Geo database GeoLite2-City.mmdb from official site after creating account in that.
 
 ---
 
