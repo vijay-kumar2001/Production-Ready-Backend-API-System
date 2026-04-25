@@ -19,8 +19,15 @@ app.use(cookieParser());
 
 app.use("/auth", HybridAuthRouter); // for auth (for everyone)
 
-app.use("/users",UserRouter); // admin + user based access
-app.use("/profile",ProfileRouter); // for normal users
+app.use("/users", UserRouter); // admin + user based access
+app.use("/profile", ProfileRouter); // for normal users
+
+app.get("/", (req, res) => {
+    res.json({
+        success: true,
+        message: "Backend API is live 🚀"
+    });
+}); // for health check
 
 // 404 handler
 app.use((req, res, next) => {
@@ -54,15 +61,15 @@ async function startServer() {
         await initGeo();
         console.log("Geo db loaded.")
     } catch (error) {
-        console.warn("Geo db cant be loaded : ",error.message);
+        console.warn("Geo db cant be loaded : ", error.message);
     }
 
     // actual starting of server and should be done in end of all things
-    app.listen(config.server.port,()=>console.log(`Hybrid Auth Server running on port ${config.server.port}`));
+    app.listen(config.server.port, () => console.log(`Hybrid Auth Server running on port ${config.server.port}`));
 }
 
-startServer().catch(error=>{
-    console.log("Failed to start server : ",error.message);
+startServer().catch(error => {
+    console.log("Failed to start server : ", error.message);
     process.exit(1);
 }) // cleaner syntax then try catch as shown below 
 
