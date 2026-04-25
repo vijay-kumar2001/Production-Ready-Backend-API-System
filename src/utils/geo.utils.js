@@ -1,10 +1,8 @@
 import maxmind from 'maxmind'
 import path from 'path'
-import { fileURLToPath } from "url"
+import { config } from '../config/env.js'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const geoDbPath = path.join(__dirname, "../geo/GeoLite2-City.mmdb");
+const geoDbPath = path.resolve(config.geoDb.geoDbFilePath);
 
 
 // this file will be used typically for login/session tracking
@@ -74,4 +72,3 @@ export function getLocationFromIp(ip) { // this is the main function that will b
     return [city,region,country].filter(Boolean).join(", ") || "unknown"; // some fields might be missing like [undefined,Delhi,India] so filter(Boolean) removes falsy values , .filter() returns array of values that satisfy given condition so .filter(Boolean) Removes: null, undefined, "", false then array is converted to string with components joined with ", "
 }
 // External data (like IP) is unreliable — always normalize, validate, and safely fallback.
-

@@ -94,5 +94,9 @@ export const config = {
     },
     app:{
         issuer:getOptionalEnv("APP_NAME","auth-backend")
+    },
+    geoDb:{
+        licenseKey:getOptionalEnv('MAXMIND_LICENSE_KEY',null),
+        geoDbFilePath:getOptionalEnv("GEO_DB_FILE_PATH","src/geo/GeoLite2-City.mmdb")
     }
 };

@@ -9,6 +9,7 @@ import { seedAdmin } from "./script/seedAdmin.js";
 import { initGeo } from "./utils/geo.utils.js";
 import { UserRouter } from "./routes/user.route.js";
 import { ProfileRouter } from "./routes/profile.route.js";
+import { downloadGeoDB } from "./utils/geoDownloader.js";
 
 const app = express();
 
@@ -46,6 +47,7 @@ async function startServer() {
     // required setup first , failing these should stop server from starting 
     await connectDB(config.server.dbUrl);
     await seedAdmin();
+    await downloadGeoDB();
 
     //optional things(geo location) inside try-catch so app starts with warning
     try {
