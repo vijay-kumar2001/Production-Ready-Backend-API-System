@@ -830,7 +830,7 @@ Authorization: Bearer <accessToken>
 ### 8. Update User Role (Admin Only)
 
 ```http
-PUT /users/:id/role
+PUT /users/:id/<role>
 ```
 
 **Headers:**
@@ -844,7 +844,6 @@ Content-Type: application/json
 
 ```json
 {
-  "role": "admin"
 }
 ```
 
@@ -853,6 +852,7 @@ Content-Type: application/json
 * Only admin allowed
 * Updates role immediately in DB
 * Prevents invalid role values
+* Allowed roles : admin,user
 
 ---
 
