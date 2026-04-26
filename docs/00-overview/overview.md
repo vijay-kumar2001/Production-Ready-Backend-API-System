@@ -1,12 +1,12 @@
 # 📌 Project Overview
 
-This project is a **production-style backend system** built using **Node.js, Express, and MongoDB**, focusing on **secure authentication, session management, and role-based access control**.
+This project is a **production-ready backend system** built using **Node.js, Express, and MongoDB Atlas**, focused on **secure authentication, session management, and role-based access control**.
 
-Unlike basic API implementations, this system combines **JWT-based authentication with database-backed sessions**, enabling:
+It combines **JWT-based authentication with database-backed sessions**, enabling:
 
 * Token revocation
-* Session tracking
-* Controlled access across users and roles
+* Session tracking across devices
+* Fine-grained access control (role + ownership)
 
 ---
 
@@ -14,9 +14,9 @@ Unlike basic API implementations, this system combines **JWT-based authenticatio
 
 * Hybrid authentication (Access + Refresh Tokens + Sessions)
 * Refresh token rotation (single-use tokens)
-* Sliding session mechanism (prevents auto logout during activity)
+* Sliding session mechanism (activity-based extension)
 * Role-based access control (admin vs user)
-* Ownership validation for resource access
+* Ownership validation for resource-level access
 * Centralized error handling
 
 ---
@@ -26,8 +26,8 @@ Unlike basic API implementations, this system combines **JWT-based authenticatio
 * Layered architecture (controller → service → model)
 * Clear separation of concerns
 * Stateless + stateful hybrid auth model
-* Secure cookie handling for refresh tokens
-* Input validation and sanitized responses
+* Secure cookie handling (httpOnly refresh tokens)
+* Input validation with sanitized responses
 
 ---
 
@@ -39,30 +39,40 @@ The system uses three main collections:
 * Sessions
 * Refresh Tokens
 
-These work together to maintain **authentication state, session validity, and token lifecycle control**.
+Together, they maintain **authentication state, session validity, and token lifecycle control**.
 
 ---
 
 ## 🔁 Key Behaviors
 
-* Login creates session + tokens
-* Refresh rotates tokens and extends session
-* Logout removes session and tokens
-* Protected routes validate both token and session
+* Login → creates session + tokens
+* Refresh → rotates tokens and extends session
+* Logout → removes session and invalidates tokens
+* Protected routes → validate both token and session
 
 ---
 
 ## 🛡️ Security Focus
 
-The system is designed to prevent:
+Designed to mitigate:
 
 * Unauthorized access
-* Token replay attacks
-* Privilege escalation
-* Token misuse across contexts
+* Token replay and reuse
+* Horizontal & vertical privilege escalation
+* Token misuse across sessions
+
+---
+
+## 🌍 Production Context
+
+* Deployed on **Render (Node.js service)**
+* Uses **MongoDB Atlas (cloud database)**
+* Integrates **Geo-location (MaxMind)** for session context
 
 ---
 
 ## 🧠 Purpose
 
-This project demonstrates not just API development, but the ability to design a **secure, structured, and scalable backend system** with real-world considerations.
+This project demonstrates the design of a **secure, structured, and production-aware backend system**, going beyond basic APIs to reflect real-world authentication and authorization patterns.
+
+---

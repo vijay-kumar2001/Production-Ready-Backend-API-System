@@ -31,6 +31,23 @@ The backend is **live and deployed in production**:
 ```text
 https://production-ready-backend-api-system.onrender.com
 ```
+### ⚠️ Note on Cold Starts (Render Free Tier)
+
+This project is deployed on the **free tier of Render**, which uses a **spin-down mechanism during inactivity**.
+
+* If the service is idle, it is automatically stopped
+* On the next incoming request, the server **boots up again**
+
+👉 As a result:
+
+```text
+First request may take ~30–50 seconds (cold start)  
+Subsequent requests are fast and normal  
+```
+
+This behavior is expected in free-tier environments and does not affect functionality.
+
+---
 
 ### 🔹 Deployment Stack
 
@@ -586,6 +603,343 @@ BASE_URL = https://production-ready-backend-api-system.onrender.com
 ```
 
 ---
+
+---
+
+## 🔗 API Reference (Production-Verified)
+
+All routes are tested on production and follow consistent request/response patterns.
+
+Base URL:
+
+```text
+https://production-ready-backend-api-system.onrender.com
+```
+
+---
+
+## 🔐 Authentication Routes
+
+### 1. Register
+
+```http
+POST /auth/register
+```
+
+**Body:**
+
+```json
+{
+  "email": "user@example.com",
+  "password": "your-password"
+}
+```
+
+**Response:**
+
+```json
+{
+  "message": "User registered successfully",
+  "user": {
+    "_id": "...",
+    "email": "...",
+    "role": "user"
+  }
+}
+```
+
+---
+
+### 2. Login
+
+```http
+POST /auth/login
+```
+
+**Body:**
+
+```json
+{
+  "email": "user@example.com",
+  "password": "your-password"
+}
+```
+
+**Response:**
+
+```json
+{
+  "message": "Login successful",
+  "accessToken": "...",
+  "user": {
+    "_id": "...",
+    "email": "...",
+    "role": "user"
+  }
+}
+```
+
+**Behavior:**
+
+* Sets `refreshToken` in httpOnly cookie
+* Creates session in DB
+* Captures device + IP + geo (if available)
+
+---
+
+### 3. Refresh Token
+
+```http
+POST /auth/refresh
+```
+
+**Headers:**
+
+```text
+Cookie: refreshToken=...
+```
+
+**Response:**
+
+```json
+{
+  "message": "Token refreshed",
+  "accessToken": "..."
+}
+```
+
+**Behavior:**
+
+* Rotates refresh token
+* Extends session (sliding session)
+* Invalidates old refresh token
+
+---
+
+### 4. Logout
+
+```http
+POST /auth/logout
+```
+
+**Response:**
+
+```json
+{
+  "message": "user logged out."
+}
+```
+
+**Behavior:**
+
+* Deletes session
+* Deletes refresh tokens
+* Clears cookie
+* Invalidates all authentication state
+
+---
+
+## 👤 User Routes
+
+### 5. Get Profile (Protected)
+
+```http
+GET /profile
+```
+
+**Headers:**
+
+```text
+Authorization: Bearer <accessToken>
+```
+
+**Response:**
+
+```json
+{
+  "message": "Profile fetched",
+  "user": {...},
+  "session": {...}
+}
+```
+
+**Behavior:**
+
+* Requires valid access token
+* Verifies session from DB
+* Extends session expiry
+* Returns session metadata (device, IP, location)
+
+---
+
+## 👥 Admin Routes (RBAC)
+
+> ⚠️ Admin credentials are **not exposed publicly**.
+> Use your own seeded admin or create via controlled setup.
+
+---
+
+### 6. Get All Users (Admin Only)
+
+```http
+GET /users
+```
+
+**Headers:**
+
+```text
+Authorization: Bearer <adminToken>
+```
+
+**Response:**
+
+```json
+{
+  "message": "Users fetched successfully",
+  "users": [...]
+}
+```
+
+**Behavior:**
+
+* Only accessible by admin
+* Returns sanitized user data
+
+---
+
+### 7. Get User by ID (Owner / Admin)
+
+```http
+GET /users/:id
+```
+
+**Headers:**
+
+```text
+Authorization: Bearer <accessToken>
+```
+
+**Behavior:**
+
+* Owner → allowed
+* Admin → allowed
+* Others → 403 Forbidden
+
+---
+
+### 8. Update User Role (Admin Only)
+
+```http
+PUT /users/:id/role
+```
+
+**Headers:**
+
+```text
+Authorization: Bearer <adminToken>
+Content-Type: application/json
+```
+
+**Body:**
+
+```json
+{
+  "role": "admin"
+}
+```
+
+**Behavior:**
+
+* Only admin allowed
+* Updates role immediately in DB
+* Prevents invalid role values
+
+---
+
+## ⚠️ Error Handling Pattern
+
+All errors follow consistent structure:
+
+```json
+{
+  "message": "Error message",
+  "status": 400
+}
+```
+
+---
+
+## 🔄 Complete Auth Lifecycle (Production Behavior)
+
+```text
+Register → Login → Access Protected Routes  
+↓  
+Access Token Expires  
+↓  
+Refresh Token Used  
+↓  
+New Tokens Issued (Rotation)  
+↓  
+Logout → Session + Tokens Destroyed
+```
+
+---
+
+## 🧪 Production Testing Coverage
+
+The system has been tested for:
+
+```text
+✔ Positive flows (all routes)  
+✔ Negative cases (invalid token, missing token)  
+✔ RBAC enforcement  
+✔ Ownership validation  
+✔ Token rotation correctness  
+✔ Session lifecycle (create → extend → destroy)  
+✔ Database consistency (MongoDB Atlas)  
+✔ External dependency behavior (GeoDB)  
+```
+
+---
+
+## 🧠 Behavioral Guarantees
+
+```text
+✔ Stateless JWT enhanced with stateful session validation  
+✔ Token misuse prevented via rotation  
+✔ Session acts as source of truth  
+✔ Authorization enforced at multiple levels (auth + role + ownership)  
+✔ System remains consistent across local and production environments  
+```
+
+---
+---
+
+## 📸 Production Validation (Proof)
+
+This system has been tested end-to-end on the deployed environment.
+
+### Verified in Production:
+
+```text
+✔ User registration → reflected in MongoDB Atlas  
+✔ Login → session + tokens created  
+✔ Refresh → token rotation confirmed  
+✔ Logout → session + tokens removed  
+✔ Profile → session + device + geo data returned  
+✔ Admin routes → RBAC enforced correctly  
+```
+
+### Validation Sources:
+
+* Postman (production API testing)
+* MongoDB Atlas (real-time DB verification)
+
+👉 This ensures the system is not just functional locally, but behaves correctly in real-world deployment.
+
+---
+
+
 
 ## 📊 What Makes This Project Stand Out
 

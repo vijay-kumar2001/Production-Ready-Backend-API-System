@@ -13,10 +13,189 @@
         {
           "name": "Register User",
           "request": {
-            "method": "",
+            "method": "GET",
             "header": []
           },
-          "response": []
+          "response": [
+            {
+              "name": "Register User",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\":\"user1@test.com\",\r\n    \"password\": \"123xyz\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}/auth/register",
+                  "host": [
+                    "{{BASE_URL}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 201
+                },
+                {
+                  "key": "date",
+                  "value": "Sat, 25 Apr 2026 23:35:27 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "139"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"c9-+8jPySRVhVamHwEpThUKqG0vgl4\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "bdec424c-7704-4b2b"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f212a036c543b04-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"User registered successfully\",\n    \"user\": {\n        \"email\": \"user1@test.com\",\n        \"role\": \"user\",\n        \"_id\": \"69ed4fbf0b04200b07750876\",\n        \"createdAt\": \"2026-04-25T23:35:27.441Z\",\n        \"updatedAt\": \"2026-04-25T23:35:27.441Z\"\n    }\n}"
+            },
+            {
+              "name": "Duplicate user",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\":\"user1@test.com\",\r\n    \"password\": \"123xyz\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/auth/register",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 409
+                },
+                {
+                  "key": "date",
+                  "value": "Sat, 25 Apr 2026 23:43:26 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "81"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"57-jkHMoq5lz1YHIG9XrBW8g3RB5BA\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "0fb80387-7ad7-42c5"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f2135b95d9f3b73-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"error\": {\n        \"message\": \"User already exists\",\n        \"type\": \"Error\",\n        \"status\": 409\n    }\n}"
+            }
+          ]
         },
         {
           "name": "Login User",
@@ -24,15 +203,587 @@
             "method": "GET",
             "header": []
           },
-          "response": []
+          "response": [
+            {
+              "name": "Login Success(production)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"user1@test.com\",\r\n  \"password\": \"123xyz\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/auth/login",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Sat, 25 Apr 2026 23:48:24 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "405"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"213-xuGRKyrtuCC2DxDtmt0U3nityK0\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "bc8b61b7-1a68-46ea"
+                },
+                {
+                  "key": "set-cookie",
+                  "value": "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWVkNGZiZjBiMDQyMDBiMDc3NTA4NzYiLCJzZXNzaW9uSWQiOiI1MzE4Mzg0ZC1jZmNiLTQxZDUtOTM4NS1kNTZlYTE3YTRhNjciLCJyb2xlIjoidXNlciIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzc3MTYwOTA0LCJleHAiOjE3NzgzNzA1MDQsImlzcyI6InByb2R1Y3Rpb24tYmFja2VuZC1hcGkifQ.6VZ1I_PIA8a6qWj8p27JAL955LIB91_5k8lfyho3sgo; Max-Age=1209600; Path=/; Expires=Sat, 09 May 2026 23:48:24 GMT; HttpOnly; Secure; SameSite=None"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f213cfdeda04037-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Login Successful\",\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWVkNGZiZjBiMDQyMDBiMDc3NTA4NzYiLCJzZXNzaW9uSWQiOiI1MzE4Mzg0ZC1jZmNiLTQxZDUtOTM4NS1kNTZlYTE3YTRhNjciLCJyb2xlIjoidXNlciIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NzcxNjA5MDQsImV4cCI6MTc3NzE2MTUwNCwiaXNzIjoicHJvZHVjdGlvbi1iYWNrZW5kLWFwaSJ9.W33K_GOZpghhf0oyKlhQeJByBic5cSF8bG090WgsuPY\",\n    \"user\": {\n        \"_id\": \"69ed4fbf0b04200b07750876\",\n        \"email\": \"user1@test.com\",\n        \"role\": \"user\",\n        \"createdAt\": \"2026-04-25T23:35:27.441Z\",\n        \"updatedAt\": \"2026-04-25T23:35:27.441Z\"\n    }\n}"
+            },
+            {
+              "name": "Invalid password",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"user1@test.com\",\r\n  \"password\": \"123xy\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/auth/login",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 400
+                },
+                {
+                  "key": "date",
+                  "value": "Sat, 25 Apr 2026 23:53:54 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "89"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"6f-lIRC2/WDZQvPmagiZrFVdRcwj30\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "47c7048f-5837-45aa"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f2145103ab395ae-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"error\": {\n        \"message\": \"Password must be at least 6 characters long\",\n        \"type\": \"Error\",\n        \"status\": 400\n    }\n}"
+            },
+            {
+              "name": "Non-existent user",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"nonexisting@test.com\",\r\n  \"password\": \"123xgay\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/auth/login",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 401
+                },
+                {
+                  "key": "date",
+                  "value": "Sat, 25 Apr 2026 23:54:34 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "77"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"57-TZkDphRQqYkqOMOHmNNwWdNgzUI\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "a659babd-c8e7-4a73"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f21460c0bb195ae-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"error\": {\n        \"message\": \"User does not exist\",\n        \"type\": \"Error\",\n        \"status\": 401\n    }\n}"
+            }
+          ]
         },
         {
           "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\",function(){\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Response has success message\",function(){\r",
+                  "    const jsonData=pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Token refreshed\");\r",
+                  "});\r",
+                  "pm.test(\"Access token is returned\",function(){\r",
+                  "    const jsonData=pm.response.json();\r",
+                  "    pm.expect(jsonData.accessToken).to.be.a(\"string\");\r",
+                  "});\r",
+                  "pm.test(\"Access token is different (rotation)\",function(){\r",
+                  "    const jsonData=pm.response.json();\r",
+                  "    const oldToken=pm.environment.get(\"ACCESS_TOKEN\");\r",
+                  "    pm.expect(jsonData.accessToken).to.not.eql(oldToken);\r",
+                  "});\r",
+                  "\r",
+                  "// determine role for CURRENT TOKEN user\r",
+                  "const newAccessToken=pm.response.json().accessToken;\r",
+                  "\r",
+                  "// only 1 token type can exist at a time \r",
+                  "// if Admin token exists , update it \r",
+                  "if(pm.environment.get(\"USER_ACCESS_TOKEN\")){\r",
+                  "    pm.environment.set(\"USER_ACCESS_TOKEN\",`${newAccessToken}`);\r",
+                  "}\r",
+                  "if(pm.environment.get(\"ADMIN_ACCESS_TOKEN\")){\r",
+                  "    pm.environment.set(\"ADMIN_ACCESS_TOKEN\",`${newAccessToken}`);\r",
+                  "}\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
-            "method": "GET",
-            "header": []
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL_PRODUCTION}}/auth/refresh",
+              "host": [
+                "{{BASE_URL_PRODUCTION}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Refresh Success(production)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/auth/refresh",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "refresh"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Sat, 25 Apr 2026 23:59:53 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "300"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"173-JmAnX24g0ZPSn58RQh3goDmtbJ0\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "38ac2c7e-41dc-4bec"
+                },
+                {
+                  "key": "set-cookie",
+                  "value": "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWVkNGZiZjBiMDQyMDBiMDc3NTA4NzYiLCJzZXNzaW9uSWQiOiI1MzE4Mzg0ZC1jZmNiLTQxZDUtOTM4NS1kNTZlYTE3YTRhNjciLCJyb2xlIjoidXNlciIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzc3MTYxNTkzLCJleHAiOjE3NzgzNzExOTMsImlzcyI6InByb2R1Y3Rpb24tYmFja2VuZC1hcGkifQ.w6RZ1AFwvkUmfrTex5_SMiHuAq8Xt5oJo-3d5z5ryP8; Max-Age=1209600; Path=/; Expires=Sat, 09 May 2026 23:59:53 GMT; HttpOnly; Secure; SameSite=None"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f214dcd3f78f8eb-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Token refreshed\",\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWVkNGZiZjBiMDQyMDBiMDc3NTA4NzYiLCJzZXNzaW9uSWQiOiI1MzE4Mzg0ZC1jZmNiLTQxZDUtOTM4NS1kNTZlYTE3YTRhNjciLCJyb2xlIjoidXNlciIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NzcxNjE1OTMsImV4cCI6MTc3NzE2MjE5MywiaXNzIjoicHJvZHVjdGlvbi1iYWNrZW5kLWFwaSJ9.p8z4lkzo8sSxvtf93-pDTcvSlesPpr4OCm8-PaDJddc\"\n}"
+            },
+            {
+              "name": "Sending w/o refreshToken",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/auth/refresh",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "refresh"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 401
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 00:04:10 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "80"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"5c-qjPD0bonJm+X8Aelmy8uLZvp27w\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "a2dbb31f-228d-409c"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f215416edddb85f-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"error\": {\n        \"message\": \"Refresh token is missing\",\n        \"type\": \"Error\",\n        \"status\": 401\n    }\n}"
+            },
+            {
+              "name": "Old rt failed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/auth/refresh",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "refresh"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 401
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 00:05:25 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "78"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"59-NzrLs4wSpLR1f2hFcbWA49PJ8ko\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "35246255-90b5-40b4"
+                },
+                {
+                  "key": "set-cookie",
+                  "value": "refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=None"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f2155ef2a2a1340-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"error\": {\n        \"message\": \"Invalid refresh token\",\n        \"type\": \"Error\",\n        \"status\": 401\n    }\n}"
+            }
+          ]
         },
         {
           "name": "Logout User",
@@ -40,7 +791,98 @@
             "method": "GET",
             "header": []
           },
-          "response": []
+          "response": [
+            {
+              "name": "Logout success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ACCESS_TOKEN}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/auth/logout",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "logout"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 00:11:13 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "34"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"1e-fqugdrJT8p79WZrdkkc/pXBOJps\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "5663b2e8-1893-4049"
+                },
+                {
+                  "key": "set-cookie",
+                  "value": "refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=None"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f215e6aa8e53c04-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"user logged out.\"\n}"
+            }
+          ]
         }
       ]
     },
@@ -53,7 +895,349 @@
             "method": "GET",
             "header": []
           },
-          "response": []
+          "response": [
+            {
+              "name": "Profile fetching success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{USER_ACCESS_TOKEN}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/profile",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "profile"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 00:23:02 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "312"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"21e-JL58mO00NZOHjJ1pu17AGF/g8Ts\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "408e16b0-954c-404e"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f216fba1c7c3bce-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Profile fetched\",\n    \"user\": {\n        \"_id\": \"69ed4fbf0b04200b07750876\",\n        \"email\": \"user1@test.com\",\n        \"role\": \"user\",\n        \"createdAt\": \"2026-04-25T23:35:27.441Z\",\n        \"updatedAt\": \"2026-04-25T23:35:27.441Z\"\n    },\n    \"session\": {\n        \"_id\": \"69ed5aa40b04200b0775087e\",\n        \"sessionId\": \"4d835124-1e4c-49f1-9594-6cfd17a767f3\",\n        \"userId\": \"69ed4fbf0b04200b07750876\",\n        \"ip\": \"152.59.173.214\",\n        \"userAgent\": \"PostmanRuntime/7.53.0\",\n        \"device\": \"Desktop\",\n        \"location\": \"Kolkata, West Bengal, India\",\n        \"expiresAt\": 1778372581840,\n        \"createdAt\": \"2026-04-26T00:21:56.842Z\",\n        \"updatedAt\": \"2026-04-26T00:23:01.840Z\"\n    }\n}"
+            },
+            {
+              "name": "fetching profile after logout",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWVkNGZiZjBiMDQyMDBiMDc3NTA4NzYiLCJzZXNzaW9uSWQiOiI1MzE4Mzg0ZC1jZmNiLTQxZDUtOTM4NS1kNTZlYTE3YTRhNjciLCJyb2xlIjoidXNlciIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NzcxNjE1OTMsImV4cCI6MTc3NzE2MjE5MywiaXNzIjoicHJvZHVjdGlvbi1iYWNrZW5kLWFwaSJ9.p8z4lkzo8sSxvtf93-pDTcvSlesPpr4OCm8-PaDJddc",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/profile",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "profile"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 401
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 00:15:56 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "86"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"63-rr7hyOpsRBrOkrGGWywp/7Wj1AE\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "a6ebbd0d-5af1-4219"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f2165559a2546a7-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"error\": {\n        \"message\": \"access token invalid or expired\",\n        \"type\": \"Error\",\n        \"status\": 401\n    }\n}"
+            },
+            {
+              "name": "w/o token",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{USER_ACCESS_TOKEN}}",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/profile",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "profile"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 401
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 00:25:22 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "87"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"63-C6wsXP39QpXqNDF1CrHN8hZZJR8\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "17945208-6137-44f2"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f217329ce0847e6-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"error\": {\n        \"message\": \"Authorization header is missing\",\n        \"type\": \"Error\",\n        \"status\": 401\n    }\n}"
+            },
+            {
+              "name": "invalid token",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{USER_ACCESS_TOKENgs}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/profile",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "profile"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 401
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 00:26:04 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "86"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"63-rr7hyOpsRBrOkrGGWywp/7Wj1AE\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "fb6e406e-baec-4bb3"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f21742fd8fd47e6-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"error\": {\n        \"message\": \"access token invalid or expired\",\n        \"type\": \"Error\",\n        \"status\": 401\n    }\n}"
+            }
+          ]
         }
       ]
     },
@@ -66,7 +1250,178 @@
             "method": "GET",
             "header": []
           },
-          "response": []
+          "response": [
+            {
+              "name": "Get All Users(admin success)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_ACCESS_TOKEN}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/users",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 01:20:42 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "218"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"165-JQwKXxvzqxOHdHYyCOl2H6HJH8A\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "d848dade-a3df-48c3"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f21c43199ca53df-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"All users fetched\",\n    \"users\": [\n        {\n            \"_id\": \"69eacb7d9aecfdf16b724bbc\",\n            \"email\": \"madebyvijay2001@gmail.com\",\n            \"role\": \"admin\",\n            \"createdAt\": \"2026-04-24T01:46:37.677Z\",\n            \"updatedAt\": \"2026-04-24T01:46:37.677Z\"\n        },\n        {\n            \"_id\": \"69ed4fbf0b04200b07750876\",\n            \"email\": \"user1@test.com\",\n            \"role\": \"user\",\n            \"createdAt\": \"2026-04-25T23:35:27.441Z\",\n            \"updatedAt\": \"2026-04-25T23:35:27.441Z\"\n        }\n    ]\n}"
+            },
+            {
+              "name": "Normal user(unauthorized)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{USER_ACCESS_TOKEN}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/users",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 403
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 01:26:28 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "84"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"68-Iop/W+xkU316J4tK0L0r1mxyVGo\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "6706a7b8-e2ca-45da"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f21cca4fd4232a3-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"error\": {\n        \"message\": \"Forbidden : insufficient permissions\",\n        \"type\": \"Error\",\n        \"status\": 403\n    }\n}"
+            }
+          ]
         },
         {
           "name": "Get User By ID",
@@ -74,7 +1429,266 @@
             "method": "GET",
             "header": []
           },
-          "response": []
+          "response": [
+            {
+              "name": "Owner details",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{USER_ACCESS_TOKEN}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/users/{{USER_ID}}",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{USER_ID}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 01:31:43 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "136"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"c1-EWtXbN55poi+TpLboNIpv6dDK10\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "436fb46f-ffe6-492a"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f21d455b95f2433-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Your details fetched\",\n    \"user\": {\n        \"_id\": \"69ed4fbf0b04200b07750876\",\n        \"email\": \"user1@test.com\",\n        \"role\": \"user\",\n        \"createdAt\": \"2026-04-25T23:35:27.441Z\",\n        \"updatedAt\": \"2026-04-25T23:35:27.441Z\"\n    }\n}"
+            },
+            {
+              "name": "User details fetched by admin",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_ACCESS_TOKEN}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/users/{{USER_ID}}",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{USER_ID}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 01:34:50 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "136"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"c1-NCmzg0pyZ3KOtztLvwn21Ch7p7Q\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "33807cf6-4c6e-4c21"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f21d8e3f9013a7b-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"User details fetched\",\n    \"user\": {\n        \"_id\": \"69ed4fbf0b04200b07750876\",\n        \"email\": \"user1@test.com\",\n        \"role\": \"user\",\n        \"createdAt\": \"2026-04-25T23:35:27.441Z\",\n        \"updatedAt\": \"2026-04-25T23:35:27.441Z\"\n    }\n}"
+            },
+            {
+              "name": "User trying fetching other user details",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{USER2_ACCESS_TOKEN}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/users/{{USER_ID}}",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{USER_ID}}"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 403
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 01:37:55 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "93"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"6d-skoS7qSK3QhLGSGd2IZFzmsX+g8\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "c3f61a34-65d0-491f"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f21dd6efb903a7b-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"error\": {\n        \"message\": \"Forbidden: not the owner of this resource\",\n        \"type\": \"Error\",\n        \"status\": 403\n    }\n}"
+            }
+          ]
         },
         {
           "name": "Update User Role",
@@ -82,7 +1696,296 @@
             "method": "GET",
             "header": []
           },
-          "response": []
+          "response": [
+            {
+              "name": "user role updated to admin",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_ACCESS_TOKEN}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"role\":\"admin\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/users/{{USER_ID}}/admin",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{USER_ID}}",
+                    "admin"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 01:49:45 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "148"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"ba-ME9CusqlJHvCwEukxe6xkrxbARI\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "72b6f959-2427-4164"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f21eec14f912666-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Role updated\",\n    \"user\": {\n        \"_id\": \"69ed4fbf0b04200b07750876\",\n        \"email\": \"user1@test.com\",\n        \"role\": \"admin\",\n        \"createdAt\": \"2026-04-25T23:35:27.441Z\",\n        \"updatedAt\": \"2026-04-26T01:49:45.163Z\"\n    }\n}"
+            },
+            {
+              "name": "normal user tryiing updating",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{USER2_ACCESS_TOKEN}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"role\":\"admin\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/users/{{USER_ID}}/user",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{USER_ID}}",
+                    "user"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 403
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 01:52:34 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "84"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"68-Iop/W+xkU316J4tK0L0r1mxyVGo\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "a6ada1d9-48d0-4e91"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f21f2e2dcc20029-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"error\": {\n        \"message\": \"Forbidden : insufficient permissions\",\n        \"type\": \"Error\",\n        \"status\": 403\n    }\n}"
+            },
+            {
+              "name": "trying invalid role",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_ACCESS_TOKEN}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"role\":\"admin\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL_PRODUCTION}}/users/{{USER_ID}}/superadmin",
+                  "host": [
+                    "{{BASE_URL_PRODUCTION}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{USER_ID}}",
+                    "superadmin"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 400
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 26 Apr 2026 01:53:16 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "content-length",
+                  "value": "72"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "etag",
+                  "value": "W/\"50-O5sP758aUUeoXDZVmFEBF9BV5f4\""
+                },
+                {
+                  "key": "rndr-id",
+                  "value": "6c51bd68-89be-4922"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "Express"
+                },
+                {
+                  "key": "x-render-origin-server",
+                  "value": "Render"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "9f21f3e73bb80029-BOM"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"error\": {\n        \"message\": \"Invalid role\",\n        \"type\": \"Error\",\n        \"status\": 400\n    }\n}"
+            }
+          ]
         }
       ]
     },
