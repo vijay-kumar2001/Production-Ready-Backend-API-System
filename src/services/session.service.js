@@ -41,6 +41,11 @@ export const sessionService = {
     },
     async retrieveSession(sessionId){   // dont know right now where this might have been used
         return sessionModel.find(sessionId); // returns session doc for specific {sessionId:sessionId}
+    },
+    async retrieveSessionsByUserId(userId){
+        return sessionModel.findByUserId(userId); //internally uses find({userId}) so returns array of matching docs
+    },
+    async deleteSessionsByUserId(userId){
+        return sessionModel.deleteByUserId(userId);
     }
-
-}
+};

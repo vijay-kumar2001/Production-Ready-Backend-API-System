@@ -1,6 +1,15 @@
+import mongoose from "mongoose";
 import { AppError } from "../utils/AppError.js";
 import { userModel } from "../models/users.model.js"
 import { sessionService } from "./session.service.js";
+import { refreshTokenModel } from "../models/refreshToken.model.js";
+//we are using "id" for id being received from req.params and "userId" for id being received from req.user
+
+function validateUserId(id){
+    if(!mongoose.isValidObjectId(id)){
+        throw new AppError("Invalid user id",400);
+    }
+}
 
 export const userService = {
     async profile(userId, sessionId) {
@@ -27,7 +36,10 @@ export const userService = {
         }
         return users;
     },
-    async getUserById(id) { // id is received by /users/:id and it is same as userId so we can pass it to userModel.findById(userId)
+    async getUserById(id) {
+        //we are using "id" for id being received from req.params and "userId" for id being received from req.user
+        // // id is received by /users/:id and it is same as userId so we can pass it to userModel.findById(userId)
+        validateUserId(id);
         const user = await userModel.findById(id);
         if (!user) { //in case wrong /:id is passed like 123xyz ie not no.
             throw new AppError("User not found", 404);
@@ -35,8 +47,10 @@ export const userService = {
         return user;
     },
     async updateUserRole(id, role) {
+        //we are using "id" for id being received from req.params and "userId" for id being received from req.user
         // it is accessible only by admin so userId ie req.user.userId is not needed only requsted user's id by /users/:id is needed so that using req.user.userId we verify admin and via query param(/users/:id) we transfer user id or value we want to update 
         // this id is received from param and not from accessToken
+        validateUserId(id);
         if (!["admin", "user"].includes(role)) { // if role is anything else then reject(although it will be called by admin but for edge case and worst case scenario where admin might also get hacked so still no other roles will be allowed)
             //  this prevents : 
             // ✔ privilege escalation
@@ -51,5 +65,37 @@ export const userService = {
             throw new AppError("User not found", 404);
         }
         return updatedUser;
+    },
+    async deleteUserById(id){
+        ////we are using "id" for id being received from req.params and "userId" for id being received from req.user
+        // first finding user before deleting it directly as we need to delete all sessions of that user and refresh tokens associatied with those sessions
+        validateUserId(id);
+        const user=await userModel.findById(id); // finds user using ._id
+        if(!user){
+            throw new AppError("User does not exists",404);
+        }
+
+        //if user exists then finding all sessions of it 
+        const sessions=await sessionService.retrieveSessionsByUserId(id); //returns array of docs having userId =id in session doc
+
+        // now we need refresh tokens linked with each session and for that we need to pass session ids so instead of passing whole doc we will passo nly array of sessionIds so now creating array of sessionIds 
+        const sessionIds=sessions.map(session=>session.sessionId) ;
+
+        // now finding & deleting all refresh tokens using sessionid 
+        await refreshTokenModel.deleteBySessionIds(sessionIds);//deleting all refresh tokens linked to the retrieved sessions for the user
+
+        // now deleting all sessions after deleting rt 
+        await sessionService.deleteSessionsByUserId(id);
+
+        //after finding user , finding all sessions attached to him , then all refresh tokens attached to those sessions and then deleting those refresh tokens and then those sessions now lets finally delete the user 
+
+        const deletedUser=await userModel.deleteUserById(id);
+        if(!deletedUser){
+            throw new AppError("User does not exists",404);
+        }
+        return deletedUser;
+
     }
-}
+
+    
+};

@@ -59,6 +59,19 @@ export const userController={
             return next(error);
         }
     },
+    async deleteUserById(req,res,next){
+        try {
+            const deletedUser=await userService.deleteUserById(req.params.id);
+            return res.json({
+                message:req.user.role==="admin" ? "User deleted" : "Your account deleted",
+                user:userModel.sanitizeUser(deletedUser)
+            });
+            
+        } catch (error) {
+            return next(error);
+        }
+    }
+    ,
     async updateUserRole(req, res, next) {
         try {
             // this can be called by admin only

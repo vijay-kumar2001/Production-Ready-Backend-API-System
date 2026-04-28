@@ -13,5 +13,7 @@ UserRouter.get("/",hybridAuthMiddleware,allowedRoles("admin"),userController.get
 // owner or admin
 UserRouter.get("/:id",hybridAuthMiddleware,isOwnerOrAdmin,userController.getUserById)
 
+UserRouter.delete("/:id",hybridAuthMiddleware,isOwnerOrAdmin,userController.deleteUserById)
+
 // role update(admin only)
 UserRouter.put("/:id/:role",hybridAuthMiddleware,allowedRoles("admin"),userController.updateUserRole)

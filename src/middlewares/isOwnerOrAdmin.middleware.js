@@ -12,7 +12,8 @@ export function isOwnerOrAdmin(req, res, next) {
     if (!requestedUserId) { // it seems illogical to check it as if req.param.id had some value then only this route will be called but here this checks for edge cases like /users/ , /users/undefined , /users/null , /users/"" , so this check is against malformed requests and not user existence 
         return next(new AppError("User id is required", 400));
     }
-
+    
+    //user is attached to req by hybridAuthMiddleware to form req.user which can be used safely
     if (req.user.role === "admin") { //if user is admin then there is no need to check whose id he is requesting 
         return next();
     }

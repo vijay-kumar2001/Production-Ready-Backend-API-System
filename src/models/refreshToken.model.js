@@ -32,14 +32,11 @@ export const refreshTokenModel = {
     async delete(refreshToken){ //logout single device
         return RefreshToken.deleteOne({refreshToken});
     },
-    async deleteBySessionId(sessionId){ // logs out one session (but all tokens of it )
-        // we have token rotation & edge cases so ideally there should not be any duplicate refresh token as new token created -> old deleted but real world can have :
-        // case 1 : race condition -> user clicks refresh twice quicky = 2 rt created 
-        // case 2 : network retry -> request sent twice (slow network) = duplicate token possible 
-        // case 3 : sys. crash mid op. -> multiple rt remains 
-        // so sessionId under edge condition can have more than 1 rt 
-        // so we are removing all rt 
+    async deleteBySessionId(sessionId){
         return RefreshToken.deleteMany({sessionId});
+    },
+    async deleteBySessionIds(sessionIds){
+        return RefreshToken.deleteMany({sessionId:{$in:sessionIds}}) // this is something like template string , which means delete all session docs whole sessionId matches with any value passed in sessionIds array
+        // this is different in syntax as compared to deleteMany are in sessionModel as it has array of values and sessionModel has single value
     }
-    // we dont need to fetch tokens by sessionId that is why no find(sessionId)
 }
