@@ -855,6 +855,120 @@ Content-Type: application/json
 * Allowed roles : admin,user
 
 ---
+### 9. Delete User (Owner / Admin)
+
+```http
+DELETE /users/:id
+```
+
+**Headers:**
+
+```text
+Authorization: Bearer <accessToken>
+```
+
+**Behavior:**
+
+* Owner → can delete own account
+* Admin → can delete any user
+* Other users → 403 Forbidden
+
+**Response (Owner Self Delete):**
+
+```json
+{
+  "message": "Your account deleted",
+  "user": {
+    "_id": "...",
+    "email": "...",
+    "role": "user"
+  }
+}
+```
+
+**Response (Admin Delete):**
+
+```json
+{
+  "message": "User deleted",
+  "user": {
+    "_id": "...",
+    "email": "...",
+    "role": "user"
+  }
+}
+```
+
+**Internal Cleanup Performed:**
+
+```text
+1. Validate target user exists
+2. Retrieve all sessions of that user
+3. Extract all sessionIds
+4. Delete refresh tokens linked to those sessionIds
+5. Delete all sessions of that user
+6. Delete the user document itself
+```
+
+**Why this matters:**
+
+* Prevents orphaned sessions
+* Prevents stale refresh token reuse
+* Ensures deleted users lose future access immediately
+* Maintains authentication consistency across the system
+
+---
+
+## 🔄 CRUD Completeness
+
+This project now implements full production-style CRUD behavior:
+
+```text
+Create → Register User  
+Read → Profile, Get Users, Get User by ID  
+Update → Update User Role  
+Delete → Delete User + Logout (session/token cleanup)
+```
+
+Unlike basic CRUD systems, delete operations here include:
+
+```text
+✔ Ownership validation  
+✔ RBAC enforcement  
+✔ Authentication cleanup  
+✔ Session invalidation  
+✔ Refresh token cleanup  
+```
+
+This makes DELETE a security-aware operation, not just database removal.
+
+---
+
+## 📸 Additional Production Validation (Delete Flow)
+
+The delete route was fully tested on the deployed production server.
+
+### Verified in Production:
+
+```text
+✔ User self-delete → successful  
+✔ Admin delete another user → successful  
+✔ Unauthorized delete attempt → 403 Forbidden  
+✔ Invalid / already deleted user → 404 Not Found  
+✔ Old access after deletion → 401 Unauthorized  
+✔ Sessions removed from DB  
+✔ Refresh tokens removed from DB  
+```
+
+### Validation Sources:
+
+* Postman (Production API)
+* MongoDB Atlas (users + sessions + refreshTokens verification)
+
+This confirms full authentication cleanup and secure lifecycle handling.
+
+---
+
 
 ## ⚠️ Error Handling Pattern
 
